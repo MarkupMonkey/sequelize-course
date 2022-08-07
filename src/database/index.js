@@ -36,7 +36,7 @@ export default class Database {
         }
 
         //Register the models
-        // registerModels(this.connection)
+        registerModels(this.connection)
 
         //Sync the models
         await this.sync();
@@ -57,8 +57,5 @@ export default class Database {
 
         }
     }
-
-
-
 
 }
