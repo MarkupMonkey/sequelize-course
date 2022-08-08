@@ -4,9 +4,9 @@ import environment from '../config/environment';
 
 export default (sequelize) => {
     class User extends Model {
-        static associate(model) {
-            User.RefreshToken = User.hasOne(model.RefreshToken);
-            User.Roles = User.hasMany(model.Role)
+        static associate(models) {
+            User.RefreshToken = User.hasOne(models.RefreshToken);
+            User.Roles = User.hasMany(models.Role)
         }
 
         static async hashPassword(password) {
