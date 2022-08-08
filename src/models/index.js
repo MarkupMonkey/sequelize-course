@@ -7,7 +7,7 @@ export function registerModels(sequelize) {
     const thisFile = path.basename(__filename); // index.js
     const modelFiles = fs.readdirSync(__dirname);
     const filteredModelFiles = modelFiles.filter(file => {
-        return file !== thisFIle && file.slice(-3) === '.js';
+        return file !== thisFile && file.slice(-3) === '.js';
     });
 
     for (const file of filteredModelFiles) {
