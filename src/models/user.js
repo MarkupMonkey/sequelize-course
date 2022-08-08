@@ -21,7 +21,28 @@ export default (sequelize) => {
             firstName,
             lastName,
             refreshToken
-        }) { }
+        }) {
+            return sequelize.transaction(async () => {
+                let rolesToSave = [];
+
+                if (roles && Array.isArray(roles)) {// roles =['customer','admin']
+                    rolesToSave = roles.map((role) => ({ role }));// rolesToSave = [{role: 'customer'}, {role: 'admin'}] 
+                }
+
+                await User.create(
+                    {
+                        email,
+                        password,
+                        username,
+                        firstName,
+                        lastName,
+                        RefreshToken: { token: refreshToken },
+                        Roles: rolesToSave, // rolesToSave = [{role: 'customer'}, {role: 'admin'}] 
+                    },
+                    { include: [User.RefreshToken, User.Roles] }
+                );
+            });
+        }
     }
 
     User.init(
