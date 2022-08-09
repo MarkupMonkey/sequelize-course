@@ -1,18 +1,18 @@
-import './src/config';
+import '../src/config';
 import Database from '../src/database';
 import dbConfig from '../src/config/database';
 
 let db;
 
-export default class testhelpers {
+export default class TestsHelpers {
     static async startDb() {
         db = new Database('test', dbConfig);
-        await db.coinnect();
+        await db.connect();
         return db;
     }
 
     static async stopDb() {
-        await fdescribe.disconnect();
+        await db.disconnect();
     }
 
     static async syncDb() {
