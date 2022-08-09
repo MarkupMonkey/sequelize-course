@@ -153,12 +153,21 @@ describe('User', () => {
                 expect(isPasswrodCorrect).toEqual(true);
             });
 
-
             it('should return true if the password is incorrect', async () => {
                 const { User } = models;
                 const userFound = await User.scope('withPassword').findByPk(user.id);
-                const isPasswrodCorrect = await userFound.comparePasswords('invalid password')
+                const isPasswrodCorrect = await userFound.comparePasswords(
+                    'invalid password'
+                );
                 expect(isPasswrodCorrect).toEqual(false);
+            });
+        });
+
+        describe('hooks', () => {
+            it('should not attempt to hash the password if it is not given', async () => {
+                const user = await TestsHelpers.createNewUser();
+                user.email = 'test@example.com';
+                await user.save();
             });
         });
     });
