@@ -12,7 +12,8 @@ export default (sequelize) => {
         static async hashPassword(password) {
             return bcrypt.hash(password, environment.saltRounds);
         };
-
+        // const result = await createNewUser(...)
+        // result === undefined
         static async createNewUser({  // metodi statici che implementeremo
             email,
             password,
@@ -22,14 +23,14 @@ export default (sequelize) => {
             lastName,
             refreshToken
         }) {
-            return sequelize.transaction(async () => {
+            return sequelize.transaction(() => {
                 let rolesToSave = [];
 
                 if (roles && Array.isArray(roles)) {// roles =['customer','admin']
                     rolesToSave = roles.map((role) => ({ role }));// rolesToSave = [{role: 'customer'}, {role: 'admin'}] 
                 }
 
-                await User.create(
+                return User.create(
                     {
                         email,
                         password,
@@ -99,7 +100,6 @@ export default (sequelize) => {
             },
         }
     );
-
     // user = await User.findOne({where: {email: 'test@example.com}})
     // user.email, user.username, user.firstName, user.lastName, user.password
     // await user.comparePassword('test123#')
@@ -110,6 +110,10 @@ export default (sequelize) => {
     User.beforeSave(async (user, option) => {
         const hashedPassword = await User.hashPassword(user.password);
         user.password = hashedPassword;
+    });
+
+    User.afterCreate((user, options) => {
+        delete user.dataValues.password;
     })
 
     return User;
