@@ -136,4 +136,30 @@ describe('User', () => {
             })
         });
     });
+
+    describe('instance methods', () => {
+        describe('comparePasswords', () => {
+            let password = 'Test123#';
+            let user;
+
+            beforeEach(async () => {
+                user = await TestsHelpers.createNewUser({ password });
+            });
+
+            it('should return true if the password is correct', async () => {
+                const { User } = models;
+                const userFound = await User.scope('withPassword').findByPk(user.id);
+                const isPasswrodCorrect = await userFound.comparePasswords(password)
+                expect(isPasswrodCorrect).toEqual(true);
+            });
+
+
+            it('should return true if the password is incorrect', async () => {
+                const { User } = models;
+                const userFound = await User.scope('withPassword').findByPk(user.id);
+                const isPasswrodCorrect = await userFound.comparePasswords('invalid password')
+                expect(isPasswrodCorrect).toEqual(false);
+            });
+        });
+    });
 });
