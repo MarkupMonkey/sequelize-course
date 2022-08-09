@@ -54,8 +54,11 @@ export default (sequelize) => {
                 unique: true,
                 validate: {
                     isEmail: {
-                        msn: 'Not a valid email address, sorry.'
+                        msg: 'Not a valid email address, sorry.'
                     },
+                    notNull: {
+                        msg: 'Email is required, motherfucker.'
+                    }
                 },
             },
             password: {
@@ -68,7 +71,7 @@ export default (sequelize) => {
                 validate: {
                     len: {
                         args: [2, 50],
-                        msg: 'Username must contain between 2 an 50 characters',
+                        msg: 'Username must contain between 2 and 50 characters',
                     },
                 },
             },
