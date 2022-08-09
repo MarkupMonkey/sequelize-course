@@ -110,7 +110,7 @@ export default (sequelize) => {
         return bcrypt.compare(password, this.password);
     }
 
-    User.beforeSave(async (user, option) => {
+    User.beforeSave(async (user, options) => {
         const hashedPassword = await User.hashPassword(user.password);
         user.password = hashedPassword;
     });

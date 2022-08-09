@@ -18,4 +18,28 @@ export default class TestsHelpers {
     static async syncDb() {
         await db.sync();
     }
+
+    static async createNewUser(options = {}) {
+        const models = require('../src/models').default;
+        const {
+            email = 'test@example.com',
+            password = 'test123#',
+            roles = ['admin', 'customer'],
+            username = 'test',
+            firstName = 'Marco',
+            lastName = 'Monkey',
+            refreshToken = 'test-refresh-token',
+        } = options;
+        const { User } = models;
+        const data = {
+            email,
+            password,
+            roles,
+            username,
+            firstName,
+            lastName,
+            refreshToken,
+        };
+        return User.createNewUser(data);
+    }
 }
