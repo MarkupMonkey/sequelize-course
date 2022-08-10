@@ -11,7 +11,7 @@ export default class App {
             logger('dev', { skip: (req, res) => environment.nodeEnv === 'test' })
         );
         this.app.use(express.json());
-        this.app.use(express.urlencoded({ extend: true }));
+        this.app.use(bodyParser.urlencoded({ extend: true }));
         this.setRoutes();
     }
 

@@ -9,9 +9,10 @@ const { User } = models;
 
 router.post(
     '/register',
-    asyncWrapper(async (req, req) => {
+    asyncWrapper(async (req, res) => {
         const { email } = req.body;
         const user = await User.findOne({ where: { email } });
+
         if (user) {
             return res
                 .status(200)
