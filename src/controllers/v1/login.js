@@ -15,7 +15,7 @@ router.post(
         if (!user || !(await user.comparePasswords(password))) {
             return res
                 .status(401)
-                .send({ success: false, message: 'invalid credentials' });
+                .send({ success: false, message: 'Invalid credentials' });
         }
 
         const payload = { email };
