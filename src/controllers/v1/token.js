@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from 'express';
 import models from '../../models';
 import asyncWrapper from '../../utils/asyncWrapper';
 import JWTUtils from '../../utils/jwt-utils';
@@ -23,7 +23,7 @@ router.post(
         if (!savedToken || !savedToken.token) {
             return res
                 .status(401)
-                .savedToken({ success: false, message: 'You must log in first' });
+                .send({ success: false, message: 'You must log in first' });
         }
 
         const payload = { email };
@@ -31,7 +31,7 @@ router.post(
 
         return res
             .status(200)
-            .send({ success: true, data: { accessToken: newAccessToken } })
+            .send({ success: true, data: { accessToken: newAccessToken } });
     })
 );
 
