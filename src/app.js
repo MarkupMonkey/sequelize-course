@@ -3,6 +3,7 @@ import environment from './config/environment';
 import logger from 'morgan';
 import errorsMiddleware from './middlewares/errors';
 import { v1Routes } from './controllers';
+import bodyParser from 'body-parser';
 
 export default class App {
     constructor() {
@@ -10,8 +11,8 @@ export default class App {
         this.app.use(
             logger('dev', { skip: (req, res) => environment.nodeEnv === 'test' })
         );
-        this.app.use(express.json());
-        this.app.use(bodyParser.urlencoded({ extend: true }));
+        this.app.use(express.json()) // for parsing application/json
+        this.app.use(bodyParser.urlencoded({ extended: true }))
         this.setRoutes();
     }
 

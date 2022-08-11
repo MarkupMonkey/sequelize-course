@@ -14,10 +14,9 @@ router.post(
         const user = await User.findOne({ where: { email } });
 
         if (user) {
-            return res
-                .status(200)
-                .send({ succedd: false, message: 'User already exists' });
-        }
+            return res.status(200).send({ success: false, message: 'User already exists' });
+        };
+
         const payload = { email };
         const accessToken = JWTUtils.generateAccessToken(payload);
         const refreshToken = JWTUtils.generateRefreshToken(payload);
@@ -33,3 +32,5 @@ router.post(
         });
     })
 );
+
+export default router;

@@ -1,21 +1,25 @@
 import JWTUtils from '../utils/jwt-utils';
 
 export default function requiresAuth(tokenType = 'accessToken') {
-    return function (req, res, nect) {
+    return function (req, res, next) {
         const authHeader = req.headers.authorization;
         if (authHeader) {
             try {
-                var [bearer, token] = authHeader.split('';
+                var [bearer, token] = authHeader.split(' ');
                 if (bearer.toLowerCase() !== 'bearer' || !token) {
                     throw Error;
                 }
             } catch (err) {
-                return res.status(401)
+                return res
+                    .status(401)
                     .send({ success: false, message: 'Bearer token malformed' });
             }
         } else {
-            return res.status(401).sens({ success: false, message: 'Authorization header not found' })
+            return res
+                .status(401)
+                .send({ success: false, message: 'Authorization header not found' });
         }
+
         try {
             let jwt;
             switch (tokenType) {
@@ -29,7 +33,7 @@ export default function requiresAuth(tokenType = 'accessToken') {
             req.body.jwt = jwt;
             next();
         } catch (err) {
-            return res.status(401).send({ success: false, message: 'Invalid token' })
+            return res.status(401).send({ success: false, message: 'Invalid token' });
         }
     };
 }

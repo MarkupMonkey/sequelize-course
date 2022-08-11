@@ -1,7 +1,7 @@
 import './config';
 import Database from './database';
 import environment from './config/environment';
-import dbConfig from './config/database'
+import dbConfig from './config/database';
 
 // IIFE = Immediately Invoked Function Expression
 (async () => {
@@ -11,5 +11,5 @@ import dbConfig from './config/database'
     } catch (err) {
         console.error('Something went wrong when initializing the server:\n', err.stack);
     }
-}
-)();
+})
+    ();
