@@ -1,11 +1,10 @@
-import { Router } from "express";
+import { Router } from 'express';
 import models from '../../models';
 import asyncWrapper from '../../utils/asyncWrapper';
 import JWTUtils from '../../utils/jwt-utils';
 
 const router = Router();
 const { User } = models;
-
 
 router.post(
     '/register',
@@ -14,8 +13,10 @@ router.post(
         const user = await User.findOne({ where: { email } });
 
         if (user) {
-            return res.status(200).send({ success: false, message: 'User already exists' });
-        };
+            return res
+                .status(200)
+                .send({ success: false, message: 'User already exists' });
+        }
 
         const payload = { email };
         const accessToken = JWTUtils.generateAccessToken(payload);

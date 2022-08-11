@@ -6,28 +6,27 @@ export default (sequelize) => {
     class User extends Model {
         static associate(models) {
             User.RefreshToken = User.hasOne(models.RefreshToken);
-            User.Roles = User.hasMany(models.Role)
+            User.Roles = User.hasMany(models.Role);
         }
 
         static async hashPassword(password) {
             return bcrypt.hash(password, environment.saltRounds);
-        };
-        // const result = await createNewUser(...)
-        // result === undefined
-        static async createNewUser({  // metodi statici che implementeremo
+        }
+
+        static async createNewUser({
             email,
             password,
             roles,
             username,
             firstName,
             lastName,
-            refreshToken
+            refreshToken,
         }) {
             return sequelize.transaction(() => {
                 let rolesToSave = [];
 
-                if (roles && Array.isArray(roles)) {// roles =['customer','admin']
-                    rolesToSave = roles.map((role) => ({ role }));// rolesToSave = [{role: 'customer'}, {role: 'admin'}] 
+                if (roles && Array.isArray(roles)) {
+                    rolesToSave = roles.map((role) => ({ role }));
                 }
 
                 return User.create(
@@ -38,7 +37,7 @@ export default (sequelize) => {
                         firstName,
                         lastName,
                         RefreshToken: { token: refreshToken },
-                        Roles: rolesToSave, // rolesToSave = [{role: 'customer'}, {role: 'admin'}] 
+                        Roles: rolesToSave,
                     },
                     { include: [User.RefreshToken, User.Roles] }
                 );
@@ -54,11 +53,11 @@ export default (sequelize) => {
                 unique: true,
                 validate: {
                     isEmail: {
-                        msg: 'Not a valid email address, sorry.'
+                        msg: 'Not a valid email address',
                     },
                     notNull: {
-                        msg: 'Email is required, motherfucker.'
-                    }
+                        msg: 'Email is required',
+                    },
                 },
             },
             password: {
@@ -80,7 +79,7 @@ export default (sequelize) => {
                 validate: {
                     len: {
                         args: [3, 50],
-                        msg: 'First name must contain between 3 an 50 characters',
+                        msg: 'First name must contain between 3 and 50 characters',
                     },
                 },
             },
@@ -89,13 +88,15 @@ export default (sequelize) => {
                 validate: {
                     len: {
                         args: [3, 50],
-                        msg: 'Last name must contain between 3 an 50 characters',
+                        msg: 'Last name must contain between 3 and 50 characters',
                     },
                 },
             },
         },
         {
-            sequelize, modelName: 'User', defaultScope: { attributes: { exclude: ['password'] } },
+            sequelize,
+            modelName: 'User',
+            defaultScope: { attributes: { exclude: ['password'] } },
             scopes: {
                 withPassword: {
                     attributes: { include: ['password'] },
@@ -103,12 +104,10 @@ export default (sequelize) => {
             },
         }
     );
-    // user = await User.findOne({where: {email: 'test@example.com}})
-    // user.email, user.username, user.firstName, user.lastName, user.password
-    // await user.comparePassword('test123#')
+
     User.prototype.comparePasswords = async function (password) {
         return bcrypt.compare(password, this.password);
-    }
+    };
 
     User.beforeSave(async (user, options) => {
         if (user.password) {
@@ -119,7 +118,7 @@ export default (sequelize) => {
 
     User.afterCreate((user, options) => {
         delete user.dataValues.password;
-    })
+    });
 
     return User;
 };

@@ -2,8 +2,6 @@ import './config';
 import Database from './database';
 import environment from './config/environment';
 import dbConfig from './config/database';
-import App from './app';
-
 // IIFE = Immediately Invoked Function Expression
 (async () => {
     try {

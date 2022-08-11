@@ -8,5 +8,4 @@ export default {
     jwtRefreshTokenSecret:
         process.env.JWT_REFRESH_TOKEN_SECRET ||
         '37786bfe4c851594d6bf194b50c2462019aca077a7567b0a1be5fd958903a951',
-
 };
